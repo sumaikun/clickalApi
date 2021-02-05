@@ -464,6 +464,35 @@ func appointmentsValidator(r *http.Request) (map[string]interface{}, Models.Appo
 
 //////////////////////////////////////////////////////////////////////
 
+func appointmentsScheduleValidator(r *http.Request) (map[string]interface{}, Models.Appointments) {
+
+	var appointments Models.Appointments
+
+	rules := govalidator.MapData{
+		"patient":          []string{"required"},
+		"appointmentDate":  []string{"required"},
+		"state":            []string{"required"},
+		"agendaAnnotation": []string{"required"},
+	}
+
+	opts := govalidator.Options{
+		Request:         r,
+		Data:            &appointments,
+		Rules:           rules,
+		RequiredDefault: true,
+	}
+
+	v := govalidator.New(opts)
+	e := v.ValidateJSON()
+	//fmt.Println(user)
+
+	err := map[string]interface{}{"validationError": e}
+
+	return err, appointments
+}
+
+//////////////////////////////////////////////////////////////////////
+
 func medicinesValidator(r *http.Request) (map[string]interface{}, Models.Medicines) {
 
 	var medicines Models.Medicines

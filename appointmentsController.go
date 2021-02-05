@@ -1,7 +1,11 @@
 package main
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
+	"io"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"time"
@@ -9,6 +13,8 @@ import (
 	"github.com/gorilla/context"
 	"github.com/gorilla/mux"
 	"gopkg.in/mgo.v2/bson"
+
+	Models "github.com/sumaikun/clickal-rest-api/models"
 
 	Helpers "github.com/sumaikun/clickal-rest-api/helpers"
 )
@@ -64,28 +70,69 @@ func appointmentsByPatientAndDateEndPoint(w http.ResponseWriter, r *http.Request
 
 func createAppointmentsEndPoint(w http.ResponseWriter, r *http.Request) {
 
+	userType := context.Get(r, "userType")
+
 	user := context.Get(r, "user")
 
 	userParsed := user.(bson.M)
 
-	defer r.Body.Close()
 	w.Header().Set("Content-type", "application/json")
 
-	err, appointment := appointmentsValidator(r)
+	// temporary buffer
+	b := bytes.NewBuffer(make([]byte, 0))
 
-	if len(err["validationError"].(url.Values)) > 0 {
-		//fmt.Println(len(e))
-		Helpers.RespondWithJSON(w, http.StatusBadRequest, err)
+	// TeeReader returns a Reader that writes to b what it reads from r.Body.
+	reader := io.TeeReader(r.Body, b)
+
+	var appointment Models.Appointments
+
+	var err map[string]interface{}
+	// Get the JSON body and decode into credentials
+	err0 := json.NewDecoder(reader).Decode(&appointment)
+
+	if err0 != nil {
+		// If the structure of the body is wrong, return an HTTP error
+		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
-	fmt.Print(appointment)
+	// we are done with body
+	defer r.Body.Close()
+
+	r.Body = ioutil.NopCloser(b)
+
+	if appointment.State == "PENDING" {
+		fmt.Println("on pending")
+		err, appointment = appointmentsScheduleValidator(r)
+
+		fmt.Println("err", err, appointment)
+
+		if len(err["validationError"].(url.Values)) > 0 {
+			Helpers.RespondWithJSON(w, http.StatusBadRequest, err)
+			return
+		}
+	} else {
+		err, appointment = appointmentsValidator(r)
+
+		if len(err["validationError"].(url.Values)) > 0 {
+			//fmt.Println("appointment", appointment.State)
+			Helpers.RespondWithJSON(w, http.StatusBadRequest, err)
+			return
+		}
+
+	}
+
+	fmt.Print("fappointment", appointment)
 
 	appointment.ID = bson.NewObjectId()
 	appointment.Date = time.Now().String()
 	appointment.UpdateDate = time.Now().String()
 	appointment.CreatedBy = userParsed["_id"].(bson.ObjectId).Hex()
 	appointment.UpdatedBy = userParsed["_id"].(bson.ObjectId).Hex()
+
+	if userType.(int) == 2 {
+		appointment.Doctor = userParsed["_id"].(bson.ObjectId).Hex()
+	}
 
 	if err := dao.Insert("appointments", appointment, nil); err != nil {
 		Helpers.RespondWithError(w, http.StatusInternalServerError, err.Error())

@@ -194,10 +194,12 @@ type PhysiologicalConstants struct {
 type Appointments struct {
 	ID                           bson.ObjectId `bson:"_id" json:"id"`
 	Patient                      string        `bson:"patient" json:"patient"`
+	Doctor                       string        `bson:"doctor" json:"doctor"`
 	ReasonForConsultation        string        `bson:"reasonForConsultation" json:"reasonForConsultation"`
 	ResultsForConsultation       string        `bson:"resultsForConsultation" json:"resultsForConsultation"`
 	MedicalReasonForConsultation string        `bson:"medicalReasonForConsultation" json:"medicalReasonForConsultation"`
 	DiagnosticCode               string        `bson:"diagnosticCode" json:"diagnosticCode"`
+	AgendaAnnotation             string        `bson:"agendaAnnotation" json:"agendaAnnotation"`
 	AppointmentDate              string        `bson:"appointmentDate" json:"appointmentDate"`
 	State                        string        `bson:"state" json:"state"`
 	Qualification                string        `bson:"qualification" json:"qualification"`

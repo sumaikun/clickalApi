@@ -29,8 +29,11 @@ func authentication(w http.ResponseWriter, r *http.Request) {
 	response := &Models.TokenResponse{Token: "", User: nil, UserType: 0}
 
 	var creds Models.Credentials
+
+	copyBody := r.Body
+
 	// Get the JSON body and decode into credentials
-	err := json.NewDecoder(r.Body).Decode(&creds)
+	err := json.NewDecoder(copyBody).Decode(&creds)
 
 	if err != nil {
 		// If the structure of the body is wrong, return an HTTP error
