@@ -133,12 +133,12 @@ func (mongo *MongoConnector) FindAllWithPatients(collection string) ([]interface
 
 	query := []bson.M{{
 		"$lookup": bson.M{
-			"let":  bson.M{"userObjId": "$createdBy"},
-			"from": "users",
+			"let":  bson.M{"doctorObjId": "$doctor"},
+			"from": "doctors",
 			"pipeline": []bson.M{{
-				"$match": bson.M{"$expr": bson.M{"$eq": []interface{}{bson.M{"$toString": "$_id"}, "$$userObjId"}}},
+				"$match": bson.M{"$expr": bson.M{"$eq": []interface{}{bson.M{"$toString": "$_id"}, "$$doctorObjId"}}},
 			}},
-			"as": "userDetails",
+			"as": "doctorDetails",
 		}}, {
 		"$lookup": bson.M{
 			"let":  bson.M{"patientObjId": "$patient"},
@@ -216,12 +216,20 @@ func (mongo *MongoConnector) FindManyByKeyWithPatiens(collection string, key str
 				"as": "userDetails",
 			}}, {
 			"$lookup": bson.M{
+				"let":  bson.M{"doctorObjId": "$doctor"},
+				"from": "doctors",
+				"pipeline": []bson.M{{
+					"$match": bson.M{"$expr": bson.M{"$eq": []interface{}{bson.M{"$toString": "$_id"}, "$$doctorObjId"}}},
+				}},
+				"as": "doctorDetails",
+			}}, {
+			"$lookup": bson.M{
 				"let":  bson.M{"patientObjId": "$patient"},
 				"from": "patients",
 				"pipeline": []bson.M{{
 					"$match": bson.M{"$expr": bson.M{"$eq": []interface{}{bson.M{"$toString": "$_id"}, "$$patientObjId"}}},
 				}},
-				"as": "userDetails",
+				"as": "patientDetails",
 			}}, {
 			"$project": bson.M{
 				"userDetails._id":         0,

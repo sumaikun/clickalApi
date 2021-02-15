@@ -333,7 +333,7 @@ func main() {
 	/* appointment */
 
 	router.Handle("/appointments", middleware.AuthMiddleware(middleware.UserMiddleware(http.HandlerFunc(createAppointmentsEndPoint)))).Methods("POST")
-	router.Handle("/appointments", middleware.AuthMiddleware(http.HandlerFunc(allAppointmentsEndPoint))).Methods("GET")
+	router.Handle("/appointments", middleware.AuthMiddleware(middleware.UserMiddleware(http.HandlerFunc(allAppointmentsEndPoint)))).Methods("GET")
 	router.Handle("/appointmentsByPatient/{patient}", middleware.AuthMiddleware(http.HandlerFunc(findAppointmentsByPatientEndPoint))).Methods("GET")
 	router.Handle("/appointmentsByPatientAndDate/{patient}/{date}", middleware.AuthMiddleware(http.HandlerFunc(appointmentsByPatientAndDateEndPoint))).Methods("GET")
 	router.Handle("/appointment/{id}", middleware.AuthMiddleware(http.HandlerFunc(findAppointmentsEndPoint))).Methods("GET")
@@ -520,6 +520,47 @@ func sendForgotPasswordEmail(token string, mail string) {
 
 	// Set E-Mail subject
 	m.SetHeader("Subject", "Recupera tu usario con el siguiente enlace")
+
+	// Set E-Mail body. You can set plain text or html with text/html
+	//m.SetBody("text/plain", "This is Gomail test body")
+	m.SetBody("text/html", htmlContentMessage)
+
+	// Settings for SMTP server
+	d := gomail.NewDialer("smtpout.secureserver.net", 587, "servicioalcliente@clickalmedic.com", config.EmailPassword)
+
+	// This is only needed when SSL/TLS certificate is not valid on server.
+	// In production this should be set to false.
+	d.TLSConfig = &tls.Config{InsecureSkipVerify: true}
+
+	// Now send E-Mail
+	if err := d.DialAndSend(m); err != nil {
+		fmt.Println(err)
+		panic(err)
+	}
+	fmt.Println("Email Sent Successfully!")
+
+	return
+}
+
+func sendAppointmentConfirmationEmail(token string, mail string, appointment string, doctorName string, appointmentDate string, appointmentHour string) {
+
+	var config = Config.Config{}
+	config.Read()
+
+	fmt.Println("Trying to send email! " + mail)
+
+	var htmlContentMessage = "  <div style='width:100%;text-align:center'><div><img src='https://i.ibb.co/59fX0bg/logoclic-02.png' alt='logoclic-02' border='0'></div><br><div><span style='color: #0f76b0;font-size: 20px;font-weight: bold;'>El doctor </span><span style='color: #54ace2;font-size: 20px;font-weight: bold;'> " + doctorName + " </span><span style='color: #0f76b0;font-size: 20px;font-weight: bold;'> agendo su cita para:</span><span style='color: #54ace2;font-size: 20px;font-weight: bold;'> " + appointmentDate + " a las " + appointmentHour + " </span><br/><a style='color: #54ace2;font-weight: bold;font-size: 20px;' href='" + frontEndUrl + "/confirm-appointment?tokenizer=" + token + "&appointment= " + appointment + "' >Confirmar</a><a style='color: red;font-weight: bold;font-size: 20px;margin-left:5px' href='" + frontEndUrl + "/cencel-appointment?tokenizer=" + token + "&appointment= " + appointment + "  ' >Cancelar</a></div></div> "
+
+	m := gomail.NewMessage()
+
+	// Set E-Mail sender
+	m.SetHeader("From", "servicioalcliente@clickalmedic.com")
+
+	// Set E-Mail receivers
+	m.SetHeader("To", mail)
+
+	// Set E-Mail subject
+	m.SetHeader("Subject", "¡Tienes una cita pendiente!")
 
 	// Set E-Mail body. You can set plain text or html with text/html
 	//m.SetBody("text/plain", "This is Gomail test body")
