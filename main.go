@@ -358,7 +358,7 @@ func main() {
 	/* agendaAnnotations */
 
 	router.Handle("/agendaAnnotations", middleware.AuthMiddleware(middleware.UserMiddleware(http.HandlerFunc(createAgendaAnnotationEndPoint)))).Methods("POST")
-	router.Handle("/agendaAnnotations", middleware.AuthMiddleware(http.HandlerFunc(allAgendaAnnotationsEndPoint))).Methods("GET")
+	router.Handle("/agendaAnnotations", middleware.AuthMiddleware(middleware.UserMiddleware(http.HandlerFunc(allAgendaAnnotationsEndPoint)))).Methods("GET")
 	router.Handle("/agendaAnnotationsByPatient/{patient}", middleware.AuthMiddleware(http.HandlerFunc(findPatientFilesByPatientEndPoint))).Methods("GET")
 	router.Handle("/agendaAnnotation/{id}", middleware.AuthMiddleware(http.HandlerFunc(findAgendaAnnotationEndPoint))).Methods("GET")
 	router.Handle("/agendaAnnotations/{id}", middleware.AuthMiddleware(http.HandlerFunc(removeAgendaAnnotationEndPoint))).Methods("DELETE")
@@ -374,6 +374,7 @@ func main() {
 
 	/* landing page services */
 	router.HandleFunc("/doctorsLandingPage", doctorsLandingPage).Methods("GET")
+	router.HandleFunc("/doctorDaySchedule/{doctor}/{date}", doctorsLandingPage).Methods("GET")
 
 	log.Fatal(http.ListenAndServe(":"+port, &CORSRouterDecorator{router}))
 

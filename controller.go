@@ -328,3 +328,25 @@ func doctorsLandingPage(w http.ResponseWriter, r *http.Request) {
 
 	Helpers.RespondWithJSON(w, http.StatusOK, doctorsLanding)
 }
+
+func doctorDaySchedule(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+
+	w.Header().Set("Content-type", "application/json")
+
+	//params["patient"]
+
+	appointments, err := dao.FindAppointmentsByDateAndDoctor(params["doctor"], params["date"])
+	if err != nil {
+		Helpers.RespondWithError(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	annotations, err := dao.FindAnnotationsByDateAndDoctor(params["doctor"], params["date"])
+	if err != nil {
+		Helpers.RespondWithError(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	Helpers.RespondWithJSON(w, http.StatusOK, map[string]interface{}{"appointments": appointments, "annotations": annotations})
+}

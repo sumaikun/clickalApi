@@ -175,7 +175,7 @@ func createAppointmentsEndPoint(w http.ResponseWriter, r *http.Request) {
 
 	}
 
-	fmt.Print("fappointment", appointment)
+	//fmt.Print("fappointment", appointment)
 
 	appointment.ID = newID
 	appointment.Date = time.Now().String()

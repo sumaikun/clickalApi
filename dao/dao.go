@@ -351,6 +351,32 @@ func (mongo *MongoConnector) FindAppointmentByDateAndPatient(patient string, dat
 	return data, err
 }
 
+//FindAppointmentsByDateAndDoctor specific query for get day appointment
+func (mongo *MongoConnector) FindAppointmentsByDateAndDoctor(doctor string, date string) (interface{}, error) {
+
+	var data []interface{}
+	err := db.C("appointments").Find(bson.M{
+		"$and": []bson.M{
+			bson.M{"appointmentDate": bson.RegEx{date + ".*", ""}},
+			bson.M{"doctor": doctor},
+		},
+	}).All(&data)
+	return data, err
+}
+
+//FindAnnotationsByDateAndDoctor specific query for get day annotations
+func (mongo *MongoConnector) FindAnnotationsByDateAndDoctor(doctor string, date string) (interface{}, error) {
+
+	var data []interface{}
+	err := db.C("agendaAnnotations").Find(bson.M{
+		"$and": []bson.M{
+			bson.M{"AnnotationDate": bson.RegEx{date + ".*", ""}},
+			bson.M{"doctor": doctor},
+		},
+	}).All(&data)
+	return data, err
+}
+
 //FindDoctorsWithCitiesAndSpecializations from repository
 func (mongo *MongoConnector) FindDoctorsWithCitiesAndSpecializations() ([]interface{}, error) {
 

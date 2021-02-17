@@ -247,6 +247,7 @@ type AgendaAnnotation struct {
 	Title            string        `bson:"title" json:"title"`
 	Description      string        `bson:"description" json:"description"`
 	Patient          string        `bson:"patient" json:"patient"`
+	Doctor           string        `bson:"doctor" json:"doctor"`
 	CreatedBy        string        `bson:"createdBy" json:"createdBy"`
 	UpdatedBy        string        `bson:"updatedBy" json:"updatedBy"`
 	Date             string        `bson:"date" json:"date"`
@@ -264,4 +265,10 @@ type DoctorSettings struct {
 	UpdatedBy    string        `bson:"updatedBy" json:"updatedBy"`
 	Date         string        `bson:"date" json:"date"`
 	UpdateDate   string        `bson:"update_date" json:"update_date"`
+}
+
+//DoctorSchedule Response
+type DoctorSchedule struct {
+	Appointments []Appointments     `json:"appointments"`
+	Annotations  []AgendaAnnotation `json:"annotation"`
 }
