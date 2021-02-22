@@ -324,7 +324,7 @@ func main() {
 	/* enums */
 	router.Handle("/userRoles", middleware.AuthMiddleware(http.HandlerFunc(userRoles))).Methods("GET")
 	router.Handle("/contactStratus", middleware.AuthMiddleware(http.HandlerFunc(contactStratus))).Methods("GET")
-	router.Handle("/contactDocumentType", middleware.AuthMiddleware(http.HandlerFunc(contactDocumentType))).Methods("GET")
+	router.Handle("/contactDocumentType", http.HandlerFunc(contactDocumentType)).Methods("GET")
 	router.Handle("/parametersType", middleware.AuthMiddleware(http.HandlerFunc(parametersType))).Methods("GET")
 	router.Handle("/administrationWays", middleware.AuthMiddleware(http.HandlerFunc(administrationWayType))).Methods("GET")
 	router.Handle("/presentations", middleware.AuthMiddleware(http.HandlerFunc(presentationType))).Methods("GET")
@@ -374,7 +374,7 @@ func main() {
 
 	/* landing page services */
 	router.HandleFunc("/doctorsLandingPage", doctorsLandingPage).Methods("GET")
-	router.HandleFunc("/doctorDaySchedule/{doctor}/{date}", doctorsLandingPage).Methods("GET")
+	router.HandleFunc("/doctorDaySchedule/{doctor}/{date}", doctorDaySchedule).Methods("GET")
 
 	log.Fatal(http.ListenAndServe(":"+port, &CORSRouterDecorator{router}))
 

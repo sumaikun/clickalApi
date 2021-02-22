@@ -370,7 +370,7 @@ func (mongo *MongoConnector) FindAnnotationsByDateAndDoctor(doctor string, date 
 	var data []interface{}
 	err := db.C("agendaAnnotations").Find(bson.M{
 		"$and": []bson.M{
-			bson.M{"AnnotationDate": bson.RegEx{date + ".*", ""}},
+			bson.M{"annotationDate": bson.RegEx{date + ".*", ""}},
 			bson.M{"doctor": doctor},
 		},
 	}).All(&data)
