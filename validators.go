@@ -607,3 +607,37 @@ func doctorSettingsValidator(r *http.Request) (map[string]interface{}, Models.Do
 
 	return err, doctorSettings
 }
+
+//////////////////////////////////////////////////////////////////////
+
+func customerRegisterByLandingAppointment(r *http.Request) (map[string]interface{}, Models.PatientAppointment) {
+
+	var contact Models.PatientAppointment
+
+	rules := govalidator.MapData{
+		"name":            []string{"required"},
+		"lastName":        []string{"required"},
+		"email":           []string{"required", "email"},
+		"phone":           []string{"required", "min:7", "max:10"},
+		"city":            []string{"required", "cityParam"},
+		"ocupation":       []string{"required"},
+		"typeId":          []string{"required", "documentTypeEnum"},
+		"identification":  []string{"required"},
+		"appointmentDate": []string{"required"},
+	}
+
+	opts := govalidator.Options{
+		Request:         r,
+		Data:            &contact,
+		Rules:           rules,
+		RequiredDefault: true,
+	}
+
+	v := govalidator.New(opts)
+	e := v.ValidateJSON()
+	//fmt.Println(user)
+
+	err := map[string]interface{}{"validationError": e}
+
+	return err, contact
+}

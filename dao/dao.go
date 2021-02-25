@@ -412,3 +412,11 @@ func (mongo *MongoConnector) FindDoctorsWithCitiesAndSpecializations() ([]interf
 
 	return data, err
 }
+
+//CustomQuery specific query for get day annotations
+func (mongo *MongoConnector) CustomQuery(collection string, query bson.M) (interface{}, error) {
+
+	var data []interface{}
+	err := db.C(collection).Find(query).All(&data)
+	return data, err
+}

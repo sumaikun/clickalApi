@@ -5,6 +5,7 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	"os"
 	"path/filepath"
 	"strings"
@@ -349,4 +350,32 @@ func doctorDaySchedule(w http.ResponseWriter, r *http.Request) {
 	}
 
 	Helpers.RespondWithJSON(w, http.StatusOK, map[string]interface{}{"appointments": appointments, "annotations": annotations})
+}
+
+func registerPatientWithAppointment(w http.ResponseWriter, r *http.Request) {
+
+	w.Header().Set("Content-type", "application/json")
+
+	err, patientAppointment := customerRegisterByLandingAppointment(r)
+
+	if len(err["validationError"].(url.Values)) > 0 {
+		//fmt.Println(len(e))
+		Helpers.RespondWithJSON(w, http.StatusBadRequest, err)
+		return
+	}
+
+	fmt.Println("patientAppointment.Email", patientAppointment.Email)
+
+	patientsResult, _ := dao.CustomQuery("patients", bson.M{
+		"$or": []bson.M{
+			bson.M{"identification": patientAppointment.Identification},
+			bson.M{"email": patientAppointment.Email},
+			bson.M{"email2": patientAppointment.Email},
+		},
+	})
+
+	fmt.Println("patientsResult", patientsResult)
+
+	Helpers.RespondWithJSON(w, http.StatusOK, map[string]interface{}{"status": "ok"})
+
 }

@@ -102,6 +102,7 @@ type Patient struct {
 	BirthDate      string        `bson:"birthDate" json:"birthDate"`
 	Password       string        `bson:"password" json:"password"`
 	Email          string        `bson:"email" json:"email"`
+	Email2         string        `bson:"email2" json:"email2"`
 	State          string        `bson:"state" json:"state"`
 	Doctors        []string      `bson:"doctors" json:"doctors"`
 	Picture        string        `bson:"picture" json:"picture"`
@@ -271,4 +272,17 @@ type DoctorSettings struct {
 type DoctorSchedule struct {
 	Appointments []Appointments     `json:"appointments"`
 	Annotations  []AgendaAnnotation `json:"annotation"`
+}
+
+//PatientAppointment representation on mongo
+type PatientAppointment struct {
+	Name            string `bson:"name" json:"name"`
+	LastName        string `bson:"lastName" json:"lastName"`
+	TypeID          string `bson:"typeId" json:"typeId"`
+	Identification  string `bson:"identification" json:"identification"`
+	City            string `bson:"city" json:"city"`
+	Phone           string `bson:"phone" json:"phone"`
+	Ocupation       string `bson:"ocupation" json:"ocupation"`
+	AppointmentDate string `bson:"appointmentDate" json:"appointmentDate"`
+	Email           string `bson:"email" json:"email"`
 }

@@ -375,6 +375,7 @@ func main() {
 	/* landing page services */
 	router.HandleFunc("/doctorsLandingPage", doctorsLandingPage).Methods("GET")
 	router.HandleFunc("/doctorDaySchedule/{doctor}/{date}", doctorDaySchedule).Methods("GET")
+	router.HandleFunc("/registerPatientWithAppointment", registerPatientWithAppointment).Methods("POST")
 
 	log.Fatal(http.ListenAndServe(":"+port, &CORSRouterDecorator{router}))
 
