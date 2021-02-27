@@ -339,7 +339,7 @@ func (mongo *MongoConnector) FindByKeyLike(collection string, key string, value 
 /** Specific services  */
 
 //FindAppointmentByDateAndPatient specific query for get day appointment
-func (mongo *MongoConnector) FindAppointmentByDateAndPatient(patient string, date string) (interface{}, error) {
+func (mongo *MongoConnector) FindAppointmentByDateAndPatient(patient string, date string) ([]interface{}, error) {
 
 	var data []interface{}
 	err := db.C("appointments").Find(bson.M{
@@ -414,9 +414,9 @@ func (mongo *MongoConnector) FindDoctorsWithCitiesAndSpecializations() ([]interf
 }
 
 //CustomQuery specific query for get day annotations
-func (mongo *MongoConnector) CustomQuery(collection string, query bson.M) (interface{}, error) {
+func (mongo *MongoConnector) CustomQuery(collection string, query bson.M) ([]bson.M, error) {
 
-	var data []interface{}
+	var data []bson.M
 	err := db.C(collection).Find(query).All(&data)
 	return data, err
 }

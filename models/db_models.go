@@ -278,6 +278,7 @@ type DoctorSchedule struct {
 type PatientAppointment struct {
 	Name            string `bson:"name" json:"name"`
 	LastName        string `bson:"lastName" json:"lastName"`
+	Doctor          string `bson:"doctor" json:"doctor"`
 	TypeID          string `bson:"typeId" json:"typeId"`
 	Identification  string `bson:"identification" json:"identification"`
 	City            string `bson:"city" json:"city"`

@@ -1,6 +1,8 @@
 package main
 
 import (
+	"encoding/gob"
+	"encoding/json"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -15,6 +17,7 @@ import (
 	"gopkg.in/mgo.v2/bson"
 
 	Helpers "github.com/sumaikun/clickal-rest-api/helpers"
+	Models "github.com/sumaikun/clickal-rest-api/models"
 )
 
 //-------------------------------------- file Upload -----------------------------------------
@@ -354,6 +357,8 @@ func doctorDaySchedule(w http.ResponseWriter, r *http.Request) {
 
 func registerPatientWithAppointment(w http.ResponseWriter, r *http.Request) {
 
+	gob.Register(bson.M{})
+
 	w.Header().Set("Content-type", "application/json")
 
 	err, patientAppointment := customerRegisterByLandingAppointment(r)
@@ -364,7 +369,7 @@ func registerPatientWithAppointment(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Println("patientAppointment.Email", patientAppointment.Email)
+	//fmt.Println("patientAppointment.Email", patientAppointment.Email)
 
 	patientsResult, _ := dao.CustomQuery("patients", bson.M{
 		"$or": []bson.M{
@@ -374,7 +379,96 @@ func registerPatientWithAppointment(w http.ResponseWriter, r *http.Request) {
 		},
 	})
 
-	fmt.Println("patientsResult", patientsResult)
+	jsonResp, merr := json.Marshal(patientsResult)
+	if merr != nil {
+		Helpers.RespondWithError(w, http.StatusInternalServerError, merr.Error())
+		return
+	}
+
+	var patientsResults []Models.Patient
+	json.Unmarshal(jsonResp, &patientsResults)
+
+	//unmarshall everything less objectID
+
+	var appointmentToSave Models.Appointments
+
+	appointmentID := bson.NewObjectId()
+
+	appointmentToSave.ID = appointmentID
+
+	appointmentToSave.AppointmentDate = patientAppointment.AppointmentDate
+
+	appointmentToSave.State = "PENDING DOCTOR"
+
+	appointmentToSave.Doctor = patientAppointment.Doctor
+
+	appointmentToSave.AgendaAnnotation = "Cita desde plataforma web"
+
+	var doctorsArray []string
+
+	if len(patientsResults) > 0 {
+
+		firstResult := patientsResult[0]
+
+		timeToCheck := strings.SplitAfter(patientAppointment.AppointmentDate, " ")
+
+		fmt.Println("timeToCheck", timeToCheck)
+
+		appointmentVal, err := dao.FindAppointmentByDateAndPatient(firstResult["_id"].(bson.ObjectId).Hex(), timeToCheck[0])
+
+		if err != nil {
+			Helpers.RespondWithError(w, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		if len(appointmentVal) > 0 {
+			Helpers.RespondWithJSON(w, http.StatusOK, map[string]interface{}{"status": "exists"})
+			return
+		}
+
+		appointmentToSave.Patient = firstResult["_id"].(bson.ObjectId).Hex()
+		val := Helpers.Contains(patientsResults[0].Doctors, appointmentToSave.Doctor)
+		if val != true {
+			doctorsArray = append(doctorsArray, patientAppointment.Doctor)
+			go dao.PartialUpdate("patients", firstResult["_id"].(bson.ObjectId).Hex(), bson.M{"doctors": doctorsArray})
+		}
+		if patientsResults[0].Email != patientAppointment.Email {
+			go dao.PartialUpdate("patients", firstResult["_id"].(bson.ObjectId).Hex(), bson.M{"email2": patientAppointment.Email})
+		}
+
+	} else {
+		newID := bson.NewObjectId()
+
+		appointmentToSave.Patient = newID.Hex()
+
+		var patientToSave Models.Patient
+
+		patientToSave.Name = patientAppointment.Name
+
+		patientToSave.LastName = patientAppointment.LastName
+
+		patientToSave.Email = patientAppointment.Email
+
+		patientToSave.TypeID = patientAppointment.TypeID
+
+		patientToSave.Identification = patientAppointment.Identification
+
+		patientToSave.Ocupation = patientAppointment.Ocupation
+
+		doctorsArray = append(doctorsArray, patientAppointment.Doctor)
+
+		patientToSave.Doctors = doctorsArray
+
+		if err := dao.Insert("patients", patientToSave, nil); err != nil {
+			Helpers.RespondWithError(w, http.StatusInternalServerError, err.Error())
+			return
+		}
+	}
+
+	if err := dao.Insert("appointments", appointmentToSave, nil); err != nil {
+		Helpers.RespondWithError(w, http.StatusInternalServerError, err.Error())
+		return
+	}
 
 	Helpers.RespondWithJSON(w, http.StatusOK, map[string]interface{}{"status": "ok"})
 

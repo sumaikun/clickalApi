@@ -188,7 +188,7 @@ func init() {
 	govalidator.AddCustomRule("appointmentTypeEnum", func(field string, rule string, message string, value interface{}) error {
 
 		if len(value.(string)) > 0 {
-			x := []string{"DONE", "PENDING", "CONFIRMED", "CANCELLED"}
+			x := []string{"DONE", "PENDING", "CONFIRMED", "CANCELLED", "PENDING DOCTOR"}
 
 			val := Helpers.Contains(x, value.(string))
 
