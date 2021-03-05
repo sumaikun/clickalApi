@@ -624,6 +624,7 @@ func customerRegisterByLandingAppointment(r *http.Request) (map[string]interface
 		"typeId":          []string{"required", "documentTypeEnum"},
 		"identification":  []string{"required"},
 		"appointmentDate": []string{"required"},
+		"doctor":          []string{"required", "doctorParam"},
 	}
 
 	opts := govalidator.Options{

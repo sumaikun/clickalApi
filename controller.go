@@ -443,6 +443,8 @@ func registerPatientWithAppointment(w http.ResponseWriter, r *http.Request) {
 
 		var patientToSave Models.Patient
 
+		patientToSave.ID = newID
+
 		patientToSave.Name = patientAppointment.Name
 
 		patientToSave.LastName = patientAppointment.LastName
@@ -454,6 +456,8 @@ func registerPatientWithAppointment(w http.ResponseWriter, r *http.Request) {
 		patientToSave.Identification = patientAppointment.Identification
 
 		patientToSave.Ocupation = patientAppointment.Ocupation
+
+		patientToSave.Phone = patientAppointment.Phone
 
 		doctorsArray = append(doctorsArray, patientAppointment.Doctor)
 

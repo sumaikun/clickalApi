@@ -297,3 +297,39 @@ func updateAppointmentsEndPoint(w http.ResponseWriter, r *http.Request) {
 	Helpers.RespondWithJSON(w, http.StatusOK, map[string]string{"result": "success"})
 
 }
+
+func confirmPatientAppointment(w http.ResponseWriter, r *http.Request) {
+
+	params := mux.Vars(r)
+
+	userType := context.Get(r, "userType")
+
+	user := context.Get(r, "user")
+
+	userParsed := user.(bson.M)
+
+	if userType.(int) == 2 {
+		sendEmailConfirmationToPatient(params["email"], userParsed["phone"].(string))
+	}
+
+	Helpers.RespondWithJSON(w, http.StatusOK, nil)
+
+}
+
+func cancelPatientAppointment(w http.ResponseWriter, r *http.Request) {
+
+	params := mux.Vars(r)
+
+	userType := context.Get(r, "userType")
+
+	user := context.Get(r, "user")
+
+	userParsed := user.(bson.M)
+
+	if userType.(int) == 2 {
+		sendEmailCancelationToPatient(params["email"], userParsed["phone"].(string))
+	}
+
+	Helpers.RespondWithJSON(w, http.StatusOK, nil)
+
+}
