@@ -312,6 +312,8 @@ func confirmPatientAppointment(w http.ResponseWriter, r *http.Request) {
 		sendEmailConfirmationToPatient(params["email"], userParsed["phone"].(string))
 	}
 
+	go dao.PartialUpdate("appointments", params["appointments"], bson.M{"state": "CONFIRMED"})
+
 	Helpers.RespondWithJSON(w, http.StatusOK, nil)
 
 }
@@ -329,6 +331,8 @@ func cancelPatientAppointment(w http.ResponseWriter, r *http.Request) {
 	if userType.(int) == 2 {
 		sendEmailCancelationToPatient(params["email"], userParsed["phone"].(string))
 	}
+
+	go dao.PartialUpdate("appointments", params["appointments"], bson.M{"state": "CANCELLED"})
 
 	Helpers.RespondWithJSON(w, http.StatusOK, nil)
 

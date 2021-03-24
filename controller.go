@@ -12,7 +12,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/Kagami/go-face"
+	//"github.com/Kagami/go-face"
 	"github.com/gorilla/mux"
 	"gopkg.in/mgo.v2/bson"
 
@@ -236,7 +236,7 @@ func stateType(w http.ResponseWriter, r *http.Request) {
 	Helpers.RespondWithJSON(w, http.StatusOK, x)
 }
 
-func recognizeFace(w http.ResponseWriter, r *http.Request) {
+/*func recognizeFace(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
 
 	rec, err := face.NewRecognizer(modelsDir)
@@ -292,7 +292,7 @@ func recognizeFace(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("userFaceID", userFaceID)
 
 	Helpers.RespondWithJSON(w, http.StatusOK, map[string]string{"result": "success"})
-}
+}*/
 
 //------------------------------------- LANDING PAGE FUNCTIONS ---------------------------------------
 

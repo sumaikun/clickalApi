@@ -271,7 +271,7 @@ func main() {
 
 	/* Authentication */
 	router.HandleFunc("/auth", authentication).Methods("POST")
-	router.HandleFunc("/recognizeFace", recognizeFace).Methods("POST")
+	//router.HandleFunc("/recognizeFace", recognizeFace).Methods("POST")
 	router.Handle("/exampleHandler", middleware.AuthMiddleware(http.HandlerFunc(exampleHandler))).Methods("GET")
 	router.HandleFunc("/createInitialUser", createInititalUser).Methods("POST")
 	router.Handle("/resetPassword", middleware.AuthMiddleware(http.HandlerFunc(resetPassword))).Methods("POST")
@@ -340,8 +340,8 @@ func main() {
 	//router.Handle("/appointments/{id}", middleware.AuthMiddleware(http.HandlerFunc(removeAppointmentsEndPoint))).Methods("DELETE")
 	router.Handle("/appointments/{id}", middleware.AuthMiddleware(middleware.UserMiddleware(http.HandlerFunc(updateAppointmentsEndPoint)))).Methods("PUT")
 	router.Handle("/appointment/{id}", middleware.AuthMiddleware(http.HandlerFunc(findAppointmentsEndPoint))).Methods("GET")
-	router.Handle("/confirmAppointment/{email}", middleware.AuthMiddleware(http.HandlerFunc(confirmPatientAppointment))).Methods("GET")
-	router.Handle("/cancelAppointment/{email}", middleware.AuthMiddleware(http.HandlerFunc(cancelPatientAppointment))).Methods("GET")
+	router.Handle("/confirmAppointment/{email}/{appointment}", middleware.AuthMiddleware(middleware.UserMiddleware(http.HandlerFunc(confirmPatientAppointment)))).Methods("GET")
+	router.Handle("/cancelAppointment/{email}/{appointment}", middleware.AuthMiddleware(middleware.UserMiddleware(http.HandlerFunc(cancelPatientAppointment)))).Methods("GET")
 
 	/* medicines */
 
