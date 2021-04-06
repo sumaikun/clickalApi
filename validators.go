@@ -169,6 +169,7 @@ func patientValidator(r *http.Request) (map[string]interface{}, Models.Patient) 
 		"typeId":         []string{"required", "documentTypeEnum"},
 		"identification": []string{"required"},
 		"birthDate":      []string{"required"},
+		"sex":            []string{"required", "sexTypeEnum"},
 	}
 
 	opts := govalidator.Options{

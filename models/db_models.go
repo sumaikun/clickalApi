@@ -106,6 +106,7 @@ type Patient struct {
 	State          string        `bson:"state" json:"state"`
 	Doctors        []string      `bson:"doctors" json:"doctors"`
 	Picture        string        `bson:"picture" json:"picture"`
+	Sex            string        `bson:"sex" json:"sex"`
 	Confirmed      bool          `bson:"confirmed" json:"confirmed"`
 	CreatedBy      string        `bson:"createdBy" json:"createdBy"`
 	UpdatedBy      string        `bson:"updatedBy" json:"updatedBy"`

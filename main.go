@@ -199,6 +199,20 @@ func init() {
 		return nil
 	})
 
+	govalidator.AddCustomRule("sexTypeEnum", func(field string, rule string, message string, value interface{}) error {
+
+		if len(value.(string)) > 0 {
+			x := []string{"M", "F"}
+
+			val := Helpers.Contains(x, value.(string))
+
+			if val != true {
+				return fmt.Errorf("The %s field must be a valid value for sexTypeEnum Enum", field)
+			}
+		}
+		return nil
+	})
+
 	govalidator.AddCustomRule("hoursRangeType", func(field string, rule string, message string, value interface{}) error {
 
 		parsedRangeType, ok := value.([]int)
