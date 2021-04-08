@@ -148,6 +148,22 @@ func init() {
 		return nil
 	})
 
+	govalidator.AddCustomRule("patientParam", func(field string, rule string, message string, value interface{}) error {
+
+		for _, element := range value.([]string) {
+			fmt.Println("patient value " + element)
+
+			if len(element) > 0 {
+				_, err := dao.FindByID("patientReview", element)
+				if err != nil {
+					return fmt.Errorf("The %s field must be a valid value must have a valid patient ID", field)
+				}
+			}
+		}
+
+		return nil
+	})
+
 	govalidator.AddCustomRule("stateEnum", func(field string, rule string, message string, value interface{}) error {
 		if len(value.(string)) > 0 {
 			x := []string{"ACTIVE", "INACTIVE", "PENDING", "CHANGE_PASSWORD"}
@@ -362,6 +378,15 @@ func main() {
 	router.Handle("/medicines", middleware.AuthMiddleware(middleware.UserMiddleware(http.HandlerFunc(createMedicinesEndPoint)))).Methods("POST")
 	router.Handle("/medicinesByPatient/{patient}", middleware.AuthMiddleware(http.HandlerFunc(findMedicinesByPatientEndPoint))).Methods("GET")
 	router.Handle("/medicinesByAppointment/{appointment}", middleware.AuthMiddleware(http.HandlerFunc(findMedicinesByAppointmentEndPoint))).Methods("GET")
+
+	/* patientReviews */
+
+	router.Handle("/patientReviews", middleware.AuthMiddleware(middleware.UserMiddleware(http.HandlerFunc(createPatientReviewEndPoint)))).Methods("POST")
+	router.Handle("/patientReviews", middleware.AuthMiddleware(http.HandlerFunc(allPatientReviewEndPoint))).Methods("GET")
+	router.Handle("/patientReviews/{patient}", middleware.AuthMiddleware(http.HandlerFunc(findPatientReviewByPatientEndPoint))).Methods("GET")
+	router.Handle("/patientReview/{id}", middleware.AuthMiddleware(http.HandlerFunc(findPatientReviewEndPoint))).Methods("GET")
+	//router.Handle("/patientReviews/{id}", middleware.AuthMiddleware(http.HandlerFunc(removePatientReviewEndpoint))).Methods("DELETE")
+	router.Handle("/patientReviews/{id}", middleware.AuthMiddleware(middleware.UserMiddleware(http.HandlerFunc(updatePatientReviewEndPoint)))).Methods("PUT")
 
 	/* patientFiles */
 

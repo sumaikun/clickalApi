@@ -364,19 +364,7 @@ func patientReviewValidator(r *http.Request) (map[string]interface{}, Models.Pat
 	var patientReview Models.PatientReview
 
 	rules := govalidator.MapData{
-		"patient":           []string{"required"},
-		"pvcVaccine":        []string{"bool"},
-		"pvcVaccineDate":    []string{"date"},
-		"tripleVaccine":     []string{"bool"},
-		"tripleVaccineDate": []string{"date"},
-		"rabiesVaccine":     []string{"bool"},
-		"rabiesVaccineDate": []string{"date"},
-		"feedingType":       []string{"required", "feedingTypeEnum"},
-		"reproductiveState": []string{"required", "reproductiveStateEnum"},
-		"previousIllnesses": []string{"required"},
-		"surgeris":          []string{"required"},
-		"familyBackground":  []string{"required"},
-		"habitat":           []string{"required"},
+		"patient": []string{"required"},
 	}
 
 	opts := govalidator.Options{
