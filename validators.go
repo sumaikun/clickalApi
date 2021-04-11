@@ -391,14 +391,13 @@ func physiologicalConstantsValidator(r *http.Request) (map[string]interface{}, M
 
 	rules := govalidator.MapData{
 		"patient":         []string{"required"},
-		"tlic":            []string{"required"},
+		"bloodPressure":   []string{"required"},
 		"heartRate":       []string{"required"},
 		"respiratoryRate": []string{"required"},
 		"heartBeat":       []string{"required"},
 		"temperature":     []string{"required"},
 		"weight":          []string{"required"},
-		"attitude":        []string{"required", "attitudeEnum"},
-		"bodyCondition":   []string{"required", "bodyConditionEnum"},
+		"height":          []string{"required"},
 		"hidrationStatus": []string{"required", "hidrationStatusEnum"},
 	}
 

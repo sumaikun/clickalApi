@@ -289,6 +289,18 @@ func init() {
 		return nil
 	})
 
+	govalidator.AddCustomRule("hidrationStatusEnum", func(field string, rule string, message string, value interface{}) error {
+
+		x := []string{"Normal", "0-5%", "6-7%", "8-9%", "+10%"}
+
+		val := Helpers.Contains(x, value.(string))
+
+		if val != true {
+			return fmt.Errorf("The %s field must be a valid value for reproductiveState Enum", field)
+		}
+		return nil
+	})
+
 }
 
 func main() {
@@ -387,6 +399,15 @@ func main() {
 	router.Handle("/patientReview/{id}", middleware.AuthMiddleware(http.HandlerFunc(findPatientReviewEndPoint))).Methods("GET")
 	//router.Handle("/patientReviews/{id}", middleware.AuthMiddleware(http.HandlerFunc(removePatientReviewEndpoint))).Methods("DELETE")
 	router.Handle("/patientReviews/{id}", middleware.AuthMiddleware(middleware.UserMiddleware(http.HandlerFunc(updatePatientReviewEndPoint)))).Methods("PUT")
+
+	/* physiological Constants */
+
+	router.Handle("/physiologicalConstants", middleware.AuthMiddleware(middleware.UserMiddleware(http.HandlerFunc(createPhysiologicalConstantsEndPoint)))).Methods("POST")
+	router.Handle("/physiologicalConstants", middleware.AuthMiddleware(http.HandlerFunc(allPhysiologicalConstantsEndPoint))).Methods("GET")
+	router.Handle("/physiologicalConstants/{patient}", middleware.AuthMiddleware(http.HandlerFunc(findPhysiologicalConstantsByPatientEndPoint))).Methods("GET")
+	router.Handle("/physiologicalConstant/{id}", middleware.AuthMiddleware(http.HandlerFunc(findPhysiologicalConstantsEndPoint))).Methods("GET")
+	//router.Handle("/physiologicalConstants/{id}", middleware.AuthMiddleware(http.HandlerFunc(removePhysiologicalConstantsEndpoint))).Methods("DELETE")
+	router.Handle("/physiologicalConstants/{id}", middleware.AuthMiddleware(middleware.UserMiddleware(http.HandlerFunc(updatePhysiologicalConstantsEndPoint)))).Methods("PUT")
 
 	/* patientFiles */
 

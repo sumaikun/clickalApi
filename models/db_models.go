@@ -162,19 +162,15 @@ type PatientReview struct {
 type PhysiologicalConstants struct {
 	ID                            bson.ObjectId `bson:"_id" json:"id"`
 	Patient                       string        `bson:"patient" json:"patient"`
-	TLIC                          string        `bson:"tlic" json:"tlic"`
+	BloodPressure                 string        `bson:"bloodPressure" json:"bloodPressure"`
 	HeartRate                     string        `bson:"heartRate" json:"heartRate"`
 	RespiratoryRate               string        `bson:"respiratoryRate" json:"respiratoryRate"`
+	OxygenSaturation              string        `bson:"oxygenSaturation" json:"oxygenSaturation"`
 	HeartBeat                     string        `bson:"heartBeat" json:"heartBeat"`
 	Temperature                   string        `bson:"temperature" json:"temperature"`
 	Weight                        string        `bson:"weight" json:"weight"`
-	Attitude                      string        `bson:"attitude" json:"attitude"`
-	BodyCondition                 string        `bson:"bodyCondition" json:"bodyCondition"`
+	Height                        string        `bson:"height" json:"height"`
 	HidrationStatus               string        `bson:"hidrationStatus" json:"hidrationStatus"`
-	ConjuntivalMucosa             string        `bson:"conjuntivalMucosa" json:"conjuntivalMucosa"`
-	OralMucosa                    string        `bson:"oralMucosa" json:"oralMucosa"`
-	VulvalMucosa                  string        `bson:"vulvalMucosa" json:"vulvalMucosa"`
-	RectalMucosa                  string        `bson:"rectalMucosa" json:"rectalMucosa"`
 	PhysicalsEye                  string        `bson:"physicalsEye" json:"physicalsEye"`
 	PhysicalsEars                 string        `bson:"physicalsEars" json:"physicalsEars"`
 	PhysicalsLinfaticmodules      string        `bson:"physicalsLinfaticmodules" json:"physicalsLinfaticmodules"`
