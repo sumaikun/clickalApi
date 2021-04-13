@@ -390,6 +390,7 @@ func main() {
 	router.Handle("/medicines", middleware.AuthMiddleware(middleware.UserMiddleware(http.HandlerFunc(createMedicinesEndPoint)))).Methods("POST")
 	router.Handle("/medicinesByPatient/{patient}", middleware.AuthMiddleware(http.HandlerFunc(findMedicinesByPatientEndPoint))).Methods("GET")
 	router.Handle("/medicinesByAppointment/{appointment}", middleware.AuthMiddleware(http.HandlerFunc(findMedicinesByAppointmentEndPoint))).Methods("GET")
+	router.Handle("/medicines/{id}", middleware.AuthMiddleware(middleware.UserMiddleware(http.HandlerFunc(updateMedicinesEndPoint)))).Methods("PUT")
 
 	/* patientReviews */
 

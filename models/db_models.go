@@ -199,6 +199,10 @@ type Appointments struct {
 	DiagnosticCode               string        `bson:"diagnosticCode" json:"diagnosticCode"`
 	AgendaAnnotation             string        `bson:"agendaAnnotation" json:"agendaAnnotation"`
 	AppointmentDate              string        `bson:"appointmentDate" json:"appointmentDate"`
+	TestName                     string        `bson:"testName" json:"testName"`
+	HaveMedicalTest              bool          `bson:"haveMedicalTest" json:"haveMedicalTest"`
+	Laboratory                   string        `bson:"laboratory" json:"laboratory"`
+	LaboratoryAddress            string        `bson:"laboratoryAddress" json:"laboratoryAddress"`
 	State                        string        `bson:"state" json:"state"`
 	Qualification                string        `bson:"qualification" json:"qualification"`
 	patientComments              string        `bson:"patientComments" json:"patientComments"`
@@ -254,15 +258,16 @@ type AgendaAnnotation struct {
 
 //DoctorSettings  representation on mongo
 type DoctorSettings struct {
-	ID           bson.ObjectId `bson:"_id" json:"id"`
-	HoursRange   []int         `bson:"hoursRange" json:"hoursRange"`
-	DaysRange    []string      `bson:"daysRange" json:"daysRange"`
-	IsScheduling bool          `bson:"isScheduling" json:"isScheduling"`
-	Doctor       string        `bson:"doctor" json:"doctor"`
-	CreatedBy    string        `bson:"createdBy" json:"createdBy"`
-	UpdatedBy    string        `bson:"updatedBy" json:"updatedBy"`
-	Date         string        `bson:"date" json:"date"`
-	UpdateDate   string        `bson:"update_date" json:"update_date"`
+	ID              bson.ObjectId `bson:"_id" json:"id"`
+	HoursRange      []int         `bson:"hoursRange" json:"hoursRange"`
+	DaysRange       []string      `bson:"daysRange" json:"daysRange"`
+	IsScheduling    bool          `bson:"isScheduling" json:"isScheduling"`
+	AppointmentTime string        `bson:"appointmentTime" json:"appointmentTime"`
+	Doctor          string        `bson:"doctor" json:"doctor"`
+	CreatedBy       string        `bson:"createdBy" json:"createdBy"`
+	UpdatedBy       string        `bson:"updatedBy" json:"updatedBy"`
+	Date            string        `bson:"date" json:"date"`
+	UpdateDate      string        `bson:"update_date" json:"update_date"`
 }
 
 //DoctorSchedule Response

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"net/url"
 	"time"
@@ -30,6 +31,8 @@ func allPhysiologicalConstantsEndPoint(w http.ResponseWriter, r *http.Request) {
 func findPhysiologicalConstantsByPatientEndPoint(w http.ResponseWriter, r *http.Request) {
 
 	params := mux.Vars(r)
+
+	fmt.Println("params patient", params["patient"])
 
 	w.Header().Set("Content-type", "application/json")
 
