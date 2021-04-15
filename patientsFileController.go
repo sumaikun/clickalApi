@@ -36,7 +36,7 @@ func findPatientFilesByPatientEndPoint(w http.ResponseWriter, r *http.Request) {
 
 	//fmt.Println("patient log" + params["patient"])
 
-	patientFiles, err := dao.FindManyByKey("patientFiles", "patient", params["patient"])
+	patientFiles, err := dao.FindManyByKeyWithPatiens("patientFiles", "patient", params["patient"])
 	if err != nil {
 		Helpers.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return

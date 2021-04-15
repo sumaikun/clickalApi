@@ -148,6 +148,14 @@ func (mongo *MongoConnector) FindAllWithPatients(collection string) ([]interface
 			}},
 			"as": "patientDetails",
 		}}, {
+		"$lookup": bson.M{
+			"let":  bson.M{"doctorObjId": "$doctor"},
+			"from": "doctors",
+			"pipeline": []bson.M{{
+				"$match": bson.M{"$expr": bson.M{"$eq": []interface{}{bson.M{"$toString": "$_id"}, "$$doctorObjId"}}},
+			}},
+			"as": "doctorDetails",
+		}}, {
 		"$project": bson.M{
 			"userDetails._id":         0,
 			"userDetails.role":        0,
@@ -184,7 +192,7 @@ func (mongo *MongoConnector) FindManyByKey(collection string, key string, value 
 				"pipeline": []bson.M{{
 					"$match": bson.M{"$expr": bson.M{"$eq": []interface{}{bson.M{"$toString": "$_id"}, "$$patientObjId"}}},
 				}},
-				"as": "userDetails",
+				"as": "patientDetails",
 			}}, {
 			"$project": bson.M{
 				"userDetails._id":         0,

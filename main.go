@@ -34,8 +34,6 @@ var (
 
 var dao = Dao.MongoConnector{}
 
-var frontEndUrl = "http://localhost:3000"
-
 //Dynamic types
 
 var typeRegistry = make(map[string]reflect.Type)
@@ -83,10 +81,12 @@ func init() {
 	//testEmail()
 
 	var config = Config.Config{}
+	var frontEndUrl = config.FrontEndUrl
 	config.Read()
 	//fmt.Println(config.Jwtkey)
 	jwtKey = []byte(config.Jwtkey)
 	port = config.Port
+	logo = config.LogoUrl
 
 	dao.Server = config.Server
 	dao.Database = config.Database
@@ -445,7 +445,7 @@ func main() {
 
 }
 
-var htmlContent = "<div style='width:100%;text-align:center'><div><img src='https://i.ibb.co/59fX0bg/logoclic-02.png' alt='logoclic-02' border='0'></div><br><div>	<span style='color: #0f76b0;font-size: 20px;font-weight: bold;'>!Hola ¡Javier gil!, los detalles de tu cita son los siguientes: </span><br/><br/><table style='border-collapse: collapse; width:100%; border: 1px solid black;'  ><tbody><tr><td style='border: 1px solid black' ><b>Diagnostico:</b></td><td style='border: 1px solid black'  >Infeccion debida a coronavirus, sin otra especificacion</td></tr><tr><td style='border: 1px solid black'  ><b>Observaciones:</b></td><td style='border: 1px solid black'  >Se hicieron diferentes pruebas y se determino que el diagnostico es debido a ...</td></tr></tbody></table><br/><span style='color: #0f76b0;font-size: 20px;font-weight: bold;'>Los medicamentos recetados son los siguientes:</span><br/><br/><table style='border-collapse: collapse; width:100%; border: 1px solid black;'  ><thead><tr><th style='color: #54ace2;font-size: 16px;font-weight: bold;'>Medicamento</th><th  style='color: #54ace2;font-size: 16px;font-weight: bold;'>Presentación</th><th  style='color: #54ace2;font-size: 16px;font-weight: bold;'>Posología</th><th  style='color: #54ace2;font-size: 16px;font-weight: bold;'>Duración</th></tr></thead><tbody><tr><td>dsd</td><td>dsd</td><td>dsd</td><td>dsd</td></tr></tbody></table></div></div>"
+var htmlContent = "<div style='width:100%;text-align:center'><div><img src='" + logo + "' alt='logoclic-02' border='0'></div><br><div>	<span style='color: #0f76b0;font-size: 20px;font-weight: bold;'>!Hola ¡Javier gil!, los detalles de tu cita son los siguientes: </span><br/><br/><table style='border-collapse: collapse; width:100%; border: 1px solid black;'  ><tbody><tr><td style='border: 1px solid black' ><b>Diagnostico:</b></td><td style='border: 1px solid black'  >Infeccion debida a coronavirus, sin otra especificacion</td></tr><tr><td style='border: 1px solid black'  ><b>Observaciones:</b></td><td style='border: 1px solid black'  >Se hicieron diferentes pruebas y se determino que el diagnostico es debido a ...</td></tr></tbody></table><br/><span style='color: #0f76b0;font-size: 20px;font-weight: bold;'>Los medicamentos recetados son los siguientes:</span><br/><br/><table style='border-collapse: collapse; width:100%; border: 1px solid black;'  ><thead><tr><th style='color: #54ace2;font-size: 16px;font-weight: bold;'>Medicamento</th><th  style='color: #54ace2;font-size: 16px;font-weight: bold;'>Presentación</th><th  style='color: #54ace2;font-size: 16px;font-weight: bold;'>Posología</th><th  style='color: #54ace2;font-size: 16px;font-weight: bold;'>Duración</th></tr></thead><tbody><tr><td>dsd</td><td>dsd</td><td>dsd</td><td>dsd</td></tr></tbody></table></div></div>"
 
 func testEmail() {
 
@@ -492,7 +492,7 @@ func sendResetPasswordEmail(token string, mail string) {
 
 	fmt.Println("Trying to send email! " + mail)
 
-	var htmlContentMessage = " <div style='width:100%;text-align:center'><div><img src='https://i.ibb.co/59fX0bg/logoclic-02.png' alt='logoclic-02' border='0'></div><br><div>	<span style='color: #0f76b0;font-size: 20px;font-weight: bold;'>Habilita tu usuario con este </span><a style='color: #54ace2;font-weight: bold;font-size: 20px;' href='" + frontEndUrl + "/recover-password?tokenizer=" + token + "' >Enlace</a></div></div>"
+	var htmlContentMessage = " <div style='width:100%;text-align:center'><div><img src='" + logo + "' alt='logoclic-02' border='0'></div><br><div>	<span style='color: #0f76b0;font-size: 20px;font-weight: bold;'>Habilita tu usuario con este </span><a style='color: #54ace2;font-weight: bold;font-size: 20px;' href='" + frontEndUrl + "/recover-password?tokenizer=" + token + "' >Enlace</a></div></div>"
 
 	m := gomail.NewMessage()
 
@@ -533,7 +533,7 @@ func sendConfirmationEmail(token string, mail string) {
 
 	fmt.Println("Trying to send email! " + mail)
 
-	var htmlContentMessage = " <div style='width:100%;text-align:center'><div><img src='https://i.ibb.co/59fX0bg/logoclic-02.png' alt='logoclic-02' border='0'></div><br><div>	<span style='color: #0f76b0;font-size: 20px;font-weight: bold;'>Habilita tu usuario con este </span><a style='color: #54ace2;font-weight: bold;font-size: 20px;' href='" + frontEndUrl + "/confirm-account?tokenizer=" + token + "' >Enlace</a></div></div>"
+	var htmlContentMessage = " <div style='width:100%;text-align:center'><div><img src='" + logo + "' alt='logoclic-02' border='0'></div><br><div>	<span style='color: #0f76b0;font-size: 20px;font-weight: bold;'>Habilita tu usuario con este </span><a style='color: #54ace2;font-weight: bold;font-size: 20px;' href='" + frontEndUrl + "/confirm-account?tokenizer=" + token + "' >Enlace</a></div></div>"
 
 	m := gomail.NewMessage()
 
@@ -574,7 +574,7 @@ func sendForgotPasswordEmail(token string, mail string) {
 
 	fmt.Println("Trying to send email! " + mail)
 
-	var htmlContentMessage = " <div style='width:100%;text-align:center'><div><img src='https://i.ibb.co/59fX0bg/logoclic-02.png' alt='logoclic-02' border='0'></div><br><div>	<span style='color: #0f76b0;font-size: 20px;font-weight: bold;'>Habilita tu usuario con este </span><a style='color: #54ace2;font-weight: bold;font-size: 20px;' href='" + frontEndUrl + "/recover-password?tokenizer=" + token + "' >Enlace</a></div></div>"
+	var htmlContentMessage = " <div style='width:100%;text-align:center'><div><img src='" + logo + "' alt='logoclic-02' border='0'></div><br><div>	<span style='color: #0f76b0;font-size: 20px;font-weight: bold;'>Habilita tu usuario con este </span><a style='color: #54ace2;font-weight: bold;font-size: 20px;' href='" + frontEndUrl + "/recover-password?tokenizer=" + token + "' >Enlace</a></div></div>"
 
 	m := gomail.NewMessage()
 
@@ -615,7 +615,7 @@ func sendAppointmentConfirmationEmail(token string, mail string, appointment str
 
 	fmt.Println("Trying to send email! " + mail)
 
-	var htmlContentMessage = "  <div style='width:100%;text-align:center'><div><img src='https://i.ibb.co/59fX0bg/logoclic-02.png' alt='logoclic-02' border='0'></div><br><div><span style='color: #0f76b0;font-size: 20px;font-weight: bold;'>El doctor </span><span style='color: #54ace2;font-size: 20px;font-weight: bold;'> " + doctorName + " </span><span style='color: #0f76b0;font-size: 20px;font-weight: bold;'> agendo su cita para:</span><span style='color: #54ace2;font-size: 20px;font-weight: bold;'> " + appointmentDate + " a las " + appointmentHour + " </span><br/><a style='color: #54ace2;font-weight: bold;font-size: 20px;' href='" + frontEndUrl + "/confirm-appointment?tokenizer=" + token + "&appointment= " + appointment + "' >Confirmar</a><a style='color: red;font-weight: bold;font-size: 20px;margin-left:5px' href='" + frontEndUrl + "/cencel-appointment?tokenizer=" + token + "&appointment= " + appointment + "  ' >Cancelar</a></div></div> "
+	var htmlContentMessage = "  <div style='width:100%;text-align:center'><div><img src='" + logo + "' alt='logoclic-02' border='0'></div><br><div><span style='color: #0f76b0;font-size: 20px;font-weight: bold;'>El doctor </span><span style='color: #54ace2;font-size: 20px;font-weight: bold;'> " + doctorName + " </span><span style='color: #0f76b0;font-size: 20px;font-weight: bold;'> agendo su cita para:</span><span style='color: #54ace2;font-size: 20px;font-weight: bold;'> " + appointmentDate + " a las " + appointmentHour + " </span><br/><a style='color: #54ace2;font-weight: bold;font-size: 20px;' href='" + frontEndUrl + "/confirm-appointment?tokenizer=" + token + "&appointment= " + appointment + "' >Confirmar</a><a style='color: red;font-weight: bold;font-size: 20px;margin-left:5px' href='" + frontEndUrl + "/cencel-appointment?tokenizer=" + token + "&appointment= " + appointment + "  ' >Cancelar</a></div></div> "
 
 	m := gomail.NewMessage()
 
@@ -656,7 +656,7 @@ func sendEmailConfirmationToPatient(mail string, phone string) {
 
 	fmt.Println("Trying to send email! " + mail)
 
-	var htmlContentMessage = "<div style='width:100%;text-align:center'><div><img src='https://i.ibb.co/59fX0bg/logoclic-02.png' alt='logoclic-02' border='0'></div><br><div>	<span style='color: #0f76b0;font-size: 20px;font-weight: bold;'>Se ha confirmado tu cita</span><br/>No dudes en llamar al " + phone + "</div></div>"
+	var htmlContentMessage = "<div style='width:100%;text-align:center'><div><img src='" + logo + "' alt='logoclic-02' border='0'></div><br><div>	<span style='color: #0f76b0;font-size: 20px;font-weight: bold;'>Se ha confirmado tu cita</span><br/>No dudes en llamar al " + phone + "</div></div>"
 
 	m := gomail.NewMessage()
 
@@ -697,7 +697,7 @@ func sendEmailCancelationToPatient(mail string, phone string) {
 
 	fmt.Println("Trying to send email! " + mail)
 
-	var htmlContentMessage = "<div style='width:100%;text-align:center'><div><img src='https://i.ibb.co/59fX0bg/logoclic-02.png' alt='logoclic-02' border='0'></div><br><div>	<span style='color: red;font-size: 20px;font-weight: bold;'>Se ha cancelado tu cita</span><br/>Confirma que paso al " + phone + "</div></div>"
+	var htmlContentMessage = "<div style='width:100%;text-align:center'><div><img src='" + logo + "' alt='logoclic-02' border='0'></div><br><div>	<span style='color: red;font-size: 20px;font-weight: bold;'>Se ha cancelado tu cita</span><br/>Confirma que paso al " + phone + "</div></div>"
 
 	m := gomail.NewMessage()
 

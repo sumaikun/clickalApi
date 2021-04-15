@@ -13,6 +13,8 @@ type Config struct {
 	Server        string
 	Database      string
 	EmailPassword string
+	FrontEndUrl   string
+	LogoUrl       string
 }
 
 // Read and parse the configuration file
