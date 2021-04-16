@@ -28,8 +28,10 @@ var (
 )
 
 var (
-	port   string
-	jwtKey []byte
+	port        string
+	jwtKey      []byte
+	logo        string
+	frontEndUrl string
 )
 
 var dao = Dao.MongoConnector{}
@@ -81,7 +83,7 @@ func init() {
 	//testEmail()
 
 	var config = Config.Config{}
-	var frontEndUrl = config.FrontEndUrl
+	frontEndUrl = config.FrontEndUrl
 	config.Read()
 	//fmt.Println(config.Jwtkey)
 	jwtKey = []byte(config.Jwtkey)
