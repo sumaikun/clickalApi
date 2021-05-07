@@ -14,6 +14,7 @@ type Config struct {
 	Database      string
 	Email         string
 	EmailPassword string
+	EmailSmtp     string
 	FrontEndUrl   string
 	LogoUrl       string
 }

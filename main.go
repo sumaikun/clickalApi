@@ -471,7 +471,7 @@ func testEmail() {
 	m.SetBody("text/html", htmlContent)
 
 	// Settings for SMTP server
-	d := gomail.NewDialer("smtpout.secureserver.net", 587, config.Email, config.EmailPassword)
+	d := gomail.NewDialer(config.EmailSmtp, 587, config.Email, config.EmailPassword)
 
 	// This is only needed when SSL/TLS certificate is not valid on server.
 	// In production this should be set to false.
@@ -512,7 +512,7 @@ func sendResetPasswordEmail(token string, mail string) {
 	m.SetBody("text/html", htmlContentMessage)
 
 	// Settings for SMTP server
-	d := gomail.NewDialer("smtpout.secureserver.net", 587, config.Email, config.EmailPassword)
+	d := gomail.NewDialer(config.EmailSmtp, 587, config.Email, config.EmailPassword)
 
 	// This is only needed when SSL/TLS certificate is not valid on server.
 	// In production this should be set to false.
@@ -553,7 +553,7 @@ func sendConfirmationEmail(token string, mail string) {
 	m.SetBody("text/html", htmlContentMessage)
 
 	// Settings for SMTP server
-	d := gomail.NewDialer("smtpout.secureserver.net", 587, config.Email, config.EmailPassword)
+	d := gomail.NewDialer(config.EmailSmtp, 587, config.Email, config.EmailPassword)
 
 	// This is only needed when SSL/TLS certificate is not valid on server.
 	// In production this should be set to false.
@@ -594,7 +594,7 @@ func sendForgotPasswordEmail(token string, mail string) {
 	m.SetBody("text/html", htmlContentMessage)
 
 	// Settings for SMTP server
-	d := gomail.NewDialer("smtpout.secureserver.net", 587, config.Email, config.EmailPassword)
+	d := gomail.NewDialer(config.EmailSmtp, 587, config.Email, config.EmailPassword)
 
 	// This is only needed when SSL/TLS certificate is not valid on server.
 	// In production this should be set to false.
@@ -635,7 +635,7 @@ func sendAppointmentConfirmationEmail(token string, mail string, appointment str
 	m.SetBody("text/html", htmlContentMessage)
 
 	// Settings for SMTP server
-	d := gomail.NewDialer("smtpout.secureserver.net", 587, config.Email, config.EmailPassword)
+	d := gomail.NewDialer(config.EmailSmtp, 587, config.Email, config.EmailPassword)
 
 	// This is only needed when SSL/TLS certificate is not valid on server.
 	// In production this should be set to false.
@@ -676,7 +676,7 @@ func sendEmailConfirmationToPatient(mail string, phone string) {
 	m.SetBody("text/html", htmlContentMessage)
 
 	// Settings for SMTP server
-	d := gomail.NewDialer("smtpout.secureserver.net", 587, config.Email, config.EmailPassword)
+	d := gomail.NewDialer(config.EmailSmtp, 587, config.Email, config.EmailPassword)
 
 	// This is only needed when SSL/TLS certificate is not valid on server.
 	// In production this should be set to false.
@@ -717,7 +717,7 @@ func sendEmailCancelationToPatient(mail string, phone string) {
 	m.SetBody("text/html", htmlContentMessage)
 
 	// Settings for SMTP server
-	d := gomail.NewDialer("smtpout.secureserver.net", 587, config.Email, config.EmailPassword)
+	d := gomail.NewDialer(config.EmailSmtp, 587, config.Email, config.EmailPassword)
 
 	// This is only needed when SSL/TLS certificate is not valid on server.
 	// In production this should be set to false.
