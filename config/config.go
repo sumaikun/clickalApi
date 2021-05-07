@@ -12,6 +12,7 @@ type Config struct {
 	Jwtkey        string
 	Server        string
 	Database      string
+	Email         string
 	EmailPassword string
 	FrontEndUrl   string
 	LogoUrl       string
