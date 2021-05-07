@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	jwtmiddleware "github.com/auth0/go-jwt-middleware"
-	"github.com/dgrijalva/jwt-go"
+	"github.com/form3tech-oss/jwt-go"
 	"gopkg.in/mgo.v2/bson"
 
 	C "github.com/sumaikun/clickal-rest-api/config"
